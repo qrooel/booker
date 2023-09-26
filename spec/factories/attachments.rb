@@ -12,7 +12,6 @@
 #
 FactoryBot.define do
   factory :attachment do
-    user { create(:user) }
     file { Rack::Test::UploadedFile.new('spec/fixtures/files/test.txt', 'text/plain') }
   end
 end
