@@ -18,7 +18,7 @@ RSpec.configure do |config|
     'v1/swagger.yaml' => {
       openapi: '3.0.1',
       info: {
-        title: 'Zipper API V1',
+        title: 'Booker API V1',
         version: 'v1'
       },
       paths: {},

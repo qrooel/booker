@@ -18,4 +18,12 @@ class Book < ApplicationRecord
   validates :title, presence: true, length: { maximum: 128 }
   validates :cover, presence: true
 
+  def cover_filename
+    cover.file.original_filename
+  end
+
+  def cover_path
+    cover.path
+  end
+
 end
