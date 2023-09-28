@@ -2,6 +2,8 @@
 
 module Authors
   class API < Grape::API
+    helpers Grape::Pagy::Helpers
+
     prefix :api
     format :json
     content_type :json, 'application/json'
@@ -21,8 +23,11 @@ module Authors
     # http://localhost:3000/api/authors
     resource :authors do
       desc "List authors"
+      params do
+        use :pagy
+      end
       get do
-        present Author.all, with: Entities::AuthorFull
+        present pagy(Author.all), with: Entities::AuthorFull
       end
 
       desc 'Author details'

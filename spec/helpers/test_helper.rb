@@ -2,6 +2,6 @@
 
 module TestHelper
   def sample_upload_file
-    fixture_file_upload 'spec/fixtures/files/test.txt', 'text/plain'
+    fixture_file_upload 'spec/fixtures/files/ixion.jpg', 'text/plain'
   end
 end

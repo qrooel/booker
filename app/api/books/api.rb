@@ -2,6 +2,8 @@
 
 module Books
   class API < Grape::API
+    helpers Grape::Pagy::Helpers
+
     prefix :api
     format :json
     content_type :json, 'application/json'
@@ -21,8 +23,11 @@ module Books
     # http://localhost:3000/api/authors
     resource :books do
       desc "List books"
+      params do
+        use :pagy
+      end
       get do
-        present Book.all, with: Entities::BookFull
+        present pagy(Book.all), with: Entities::BookFull
       end
 
       desc 'Book details'
@@ -35,11 +40,14 @@ module Books
 
       desc 'Create book'
       params do
-        requires :title, type: String
-        requires :author_id, type: Integer
+        requires :book, type: Hash do
+          requires :title, type: String
+          requires :author_id, type: Integer
+          requires :cover, type: File
+        end
       end
       post do
-        book = Book.create!(declared(params))
+        book = Book.create!(declared(params)[:book])
 
         present book, with: Entities::BookFull
       end

@@ -27,21 +27,42 @@ describe Authors::API, type: :request do
     get "List authors" do #
       tags 'Authors'
       produces 'application/json'
+      parameter name: :page, in: :query, type: :string
+      parameter name: :items, in: :query, type: :string
 
-      let(:author) { create(:author_with_books) }
+      let(:items) { 20 }
+      let(:authors) { create_list(:author_with_books, 30) }
 
       before do
-        author
+        authors
       end
 
-      response '200', 'ok' do
+      response '200', 'Gets 20 records (default)' do
+        let(:page) { 1 }
+
         schema type: :array,
                items: {
                  type: :object,
                  properties: author_properties, required: %w[id first_name last_name books]
                }
 
-        run_test!
+        run_test! do |response|
+          expect(JSON.parse(response.body).size).to eq(20)
+        end
+      end
+
+      response '200', 'Gets 10 records on the second page' do
+        let(:page) { 2 }
+
+        schema type: :array,
+               items: {
+                 type: :object,
+                 properties: author_properties, required: %w[id first_name last_name books]
+               }
+
+        run_test! do |response|
+          expect(JSON.parse(response.body).size).to eq(10)
+        end
       end
 
     end

@@ -25,21 +25,42 @@ describe Books::API, type: :request do
     get "List authors" do #
       tags 'Books'
       produces 'application/json'
+      parameter name: :page, in: :query, type: :string
+      parameter name: :items, in: :query, type: :string
 
-      let(:book) { create(:book_with_author) }
+      let(:items) { 20 }
+      let(:books) { create_list(:book_with_author, 30) }
 
       before do
-        book
+        books
       end
 
-      response '200', 'ok' do
+      response '200', 'Gets 20 records (default)' do
+        let(:page) { 1 }
+
         schema type: :array,
                items: {
                  type: :object,
                  properties: book_properties, required: %w[id title author]
                }
 
-        run_test!
+        run_test! do |response|
+          expect(JSON.parse(response.body).size).to eq(20)
+        end
+      end
+
+      response '200', 'Gets 10 records on the second page' do
+        let(:page) { 2 }
+
+        schema type: :array,
+               items: {
+                 type: :object,
+                 properties: book_properties, required: %w[id title author]
+               }
+
+        run_test! do |response|
+          expect(JSON.parse(response.body).size).to eq(10)
+        end
       end
 
     end
@@ -81,21 +102,22 @@ describe Books::API, type: :request do
 
       tags 'Books'
       produces 'application/json'
-      consumes 'application/json'
-      parameter name: :book, in: :body, schema: {
+      consumes 'multipart/form-data'
+      parameter name: :book, in: :formData, schema: {
         type: :object,
         properties: {
           title: { type: :string },
-          author_id: { type: :string }
+          cover: { type: :file },
+          author_id: { type: :integer }
         },
         required: ['title']
       }
 
       response '201', 'Created' do
         schema type: :object,
-               properties: book_properties, required: %w[id title author]
+               properties: book_properties, required: %w[id title author cover_link]
 
-        let(:book) { { title: "Andrzej", author_id: author.id } }
+        let(:book) { { title: "Problem Trzech Ciał", cover: sample_upload_file, author_id: author.id } }
 
         run_test!
       end
@@ -107,7 +129,7 @@ describe Books::API, type: :request do
                },
                required: %w[error]
 
-        let(:book) { { title: nil, author_id: nil } }
+        let(:book) { { title: nil, author_id: nil, cover: sample_upload_file } }
 
         run_test!
       end

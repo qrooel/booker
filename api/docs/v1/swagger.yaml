@@ -9,9 +9,18 @@ paths:
       summary: List authors
       tags:
       - Authors
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+      - name: items
+        in: query
+        schema:
+          type: string
       responses:
         '200':
-          description: ok
+          description: Gets 10 records on the second page
           content:
             application/json:
               schema:
@@ -247,9 +256,18 @@ paths:
       summary: List authors
       tags:
       - Books
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+      - name: items
+        in: query
+        schema:
+          type: string
       responses:
         '200':
-          description: ok
+          description: Gets 10 records on the second page
           content:
             application/json:
               schema:
@@ -316,6 +334,7 @@ paths:
                 - id
                 - title
                 - author
+                - cover_link
         '403':
           description: Validation errors
           content:
@@ -331,14 +350,16 @@ paths:
           description: Params (author_id) are missing
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               properties:
                 title:
                   type: string
+                cover:
+                  type: file
                 author_id:
-                  type: string
+                  type: integer
               required:
               - title
   "/api/books/{id}":
