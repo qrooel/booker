@@ -16,7 +16,7 @@ class Book < ApplicationRecord
   belongs_to :author
 
   validates :title, presence: true, length: { maximum: 128 }
-  validates :cover, presence: true
+  # validates :cover, presence: true
 
   def cover_filename
     cover.file.original_filename

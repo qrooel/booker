@@ -10,17 +10,19 @@ module Books
       error!('Record not found', 404)
     end
 
+    rescue_from ActiveRecord::RecordInvalid do |error|
+      error!({ error: error.record.errors.messages }, 403)
+    end
+
     rescue_from :all do |e|
       error!(e.message, 500)
     end
 
-    # http://localhost:3000/api/books
+    # http://localhost:3000/api/authors
     resource :books do
       desc "List books"
       get do
-
-        {}
-        # present @current_user.attachments, with: Entities::Attachment
+        present Book.all, with: Entities::BookFull
       end
 
       desc 'Book details'
@@ -28,27 +30,42 @@ module Books
         requires :id, type: Integer
       end
       get ":id" do
-        {det: true}
+        present Book.find(params[:id]), with: Entities::BookFull
       end
 
       desc 'Create book'
       params do
+        requires :title, type: String
+        requires :author_id, type: Integer
       end
       post do
+        book = Book.create!(declared(params))
+
+        present book, with: Entities::BookFull
       end
 
       desc 'Update book'
       params do
         requires :id, type: Integer
+        optional :title, type: String
       end
-      put do
+      put ":id" do
+        book = Book.find(params[:id])
+
+        book.update!(declared(params).except(:id))
+
+        present book, with: Entities::BookFull
       end
 
       desc 'Delete book'
       params do
         requires :id, type: Integer
       end
-      delete do
+      delete ':id' do
+        book = Book.find(params[:id])
+        book.delete
+
+        status 204
       end
     end
 

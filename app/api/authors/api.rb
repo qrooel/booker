@@ -22,7 +22,7 @@ module Authors
     resource :authors do
       desc "List authors"
       get do
-        present Author.all, with: Entities::Author
+        present Author.all, with: Entities::AuthorFull
       end
 
       desc 'Author details'
@@ -30,7 +30,7 @@ module Authors
         requires :id, type: Integer
       end
       get ":id" do
-        present Author.find(params[:id]), with: Entities::Author
+        present Author.find(params[:id]), with: Entities::AuthorFull
       end
 
       desc 'Create author'
@@ -42,7 +42,7 @@ module Authors
       post do
         author = Author.create!(declared(params))
 
-        present author, with: Entities::Author
+        present author, with: Entities::AuthorFull
       end
 
       desc 'Update author'
@@ -57,7 +57,7 @@ module Authors
 
         author.update!(declared(params).except(:id))
 
-        present author, with: Entities::Author
+        present author, with: Entities::AuthorFull
       end
 
       desc 'Delete author'

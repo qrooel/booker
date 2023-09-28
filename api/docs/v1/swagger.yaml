@@ -242,6 +242,226 @@ paths:
           description: Deleted
         '404':
           description: Record not found
+  "/api/books":
+    get:
+      summary: List authors
+      tags:
+      - Books
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    cover_link:
+                      type: string
+                    data:
+                      type: json
+                    author:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        first_name:
+                          type: string
+                        last_name:
+                          type: string
+                        genre:
+                          type: string
+                  required:
+                  - id
+                  - title
+                  - author
+    post:
+      summary: Create book
+      tags:
+      - Books
+      parameters: []
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  cover_link:
+                    type: string
+                  data:
+                    type: json
+                  author:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      genre:
+                        type: string
+                required:
+                - id
+                - title
+                - author
+        '403':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                required:
+                - error
+        '500':
+          description: Params (author_id) are missing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                author_id:
+                  type: string
+              required:
+              - title
+  "/api/books/{id}":
+    get:
+      summary: Show book details
+      tags:
+      - Books
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  cover_link:
+                    type: string
+                  data:
+                    type: json
+                  author:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      genre:
+                        type: string
+                required:
+                - id
+                - title
+                - author
+        '404':
+          description: Record not found
+    put:
+      summary: Update book
+      tags:
+      - Books
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  cover_link:
+                    type: string
+                  data:
+                    type: json
+                  author:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      genre:
+                        type: string
+                required:
+                - id
+                - title
+                - author
+        '403':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                required:
+                - error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+              required:
+              - title
+    delete:
+      summary: Show book details
+      tags:
+      - Books
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: Record not found
 servers:
 - url: http://localhost:3000
   variables:
