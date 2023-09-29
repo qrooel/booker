@@ -38,6 +38,8 @@ gem 'grape'
 gem 'grape-entity'
 gem 'rswag-api'
 gem 'rswag-ui'
+gem 'pagy', '~> 6.1'
+gem 'grape-pagy'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"

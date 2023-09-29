@@ -1,0 +1,504 @@
+---
+openapi: 3.0.1
+info:
+  title: Booker API V1
+  version: v1
+paths:
+  "/api/authors":
+    get:
+      summary: List authors
+      tags:
+      - Authors
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+      - name: items
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Gets 10 records on the second page
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    genre:
+                      type: string
+                    books:
+                      type: array
+                      items:
+                        properties:
+                          id:
+                            type: integer
+                          title:
+                            type: string
+                          data:
+                            type: json
+                          cover_link:
+                            type: string
+                  required:
+                  - id
+                  - first_name
+                  - last_name
+                  - books
+    post:
+      summary: Create author
+      tags:
+      - Authors
+      parameters: []
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+                  genre:
+                    type: string
+                  books:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: integer
+                        title:
+                          type: string
+                        data:
+                          type: json
+                        cover_link:
+                          type: string
+                required:
+                - id
+                - first_name
+                - last_name
+                - books
+        '403':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                required:
+                - error
+        '500':
+          description: Params are missing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                genre:
+                  type: string
+              required:
+              - first_name
+              - last_name
+              - genre
+  "/api/authors/{id}":
+    get:
+      summary: Show author details
+      tags:
+      - Authors
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+                  genre:
+                    type: string
+                  books:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: integer
+                        title:
+                          type: string
+                        data:
+                          type: json
+                        cover_link:
+                          type: string
+                required:
+                - id
+                - first_name
+                - last_name
+                - books
+        '404':
+          description: Record not found
+    put:
+      summary: Update author
+      tags:
+      - Authors
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+                  genre:
+                    type: string
+                  books:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: integer
+                        title:
+                          type: string
+                        data:
+                          type: json
+                        cover_link:
+                          type: string
+                required:
+                - id
+                - first_name
+                - last_name
+                - books
+        '403':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                required:
+                - error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                genre:
+                  type: string
+              required:
+              - first_name
+              - last_name
+              - genre
+    delete:
+      summary: Show author details
+      tags:
+      - Authors
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: Record not found
+  "/api/books":
+    get:
+      summary: List authors
+      tags:
+      - Books
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+      - name: items
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Gets 10 records on the second page
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    cover_link:
+                      type: string
+                    data:
+                      type: json
+                    author:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        first_name:
+                          type: string
+                        last_name:
+                          type: string
+                        genre:
+                          type: string
+                  required:
+                  - id
+                  - title
+                  - author
+    post:
+      summary: Create book
+      tags:
+      - Books
+      parameters: []
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  cover_link:
+                    type: string
+                  data:
+                    type: json
+                  author:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      genre:
+                        type: string
+                required:
+                - id
+                - title
+                - author
+                - cover_link
+        '403':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                required:
+                - error
+        '500':
+          description: Params (author_id) are missing
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                cover:
+                  type: file
+                author_id:
+                  type: integer
+              required:
+              - title
+  "/api/books/{id}":
+    get:
+      summary: Show book details
+      tags:
+      - Books
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  cover_link:
+                    type: string
+                  data:
+                    type: json
+                  author:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      genre:
+                        type: string
+                required:
+                - id
+                - title
+                - author
+        '404':
+          description: Record not found
+    put:
+      summary: Update book
+      tags:
+      - Books
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  cover_link:
+                    type: string
+                  data:
+                    type: json
+                  author:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      genre:
+                        type: string
+                required:
+                - id
+                - title
+                - author
+        '403':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                required:
+                - error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+              required:
+              - title
+    delete:
+      summary: Show book details
+      tags:
+      - Books
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: Record not found
+  "/api/books/{id}/cover":
+    get:
+      summary: Redirects to cover image
+      tags:
+      - Books
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '302':
+          description: Redirected
+servers:
+- url: http://localhost:3000
+  variables:
+    defaultHost:
+      default: localhost:3000
