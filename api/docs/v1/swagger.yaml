@@ -483,6 +483,20 @@ paths:
           description: Deleted
         '404':
           description: Record not found
+  "/api/books/{id}/cover":
+    get:
+      summary: Redirects to cover image
+      tags:
+      - Books
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '302':
+          description: Redirected
 servers:
 - url: http://localhost:3000
   variables:

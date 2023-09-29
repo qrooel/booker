@@ -9,7 +9,8 @@ module Entities
 
     def cover_link
       base_url = books_api_url(url_options)
-      "#{base_url}/api/books/#{object.id}/download_cover"
+
+      "#{base_url}/api/books/#{object.id}/cover"
     end
   end
 end

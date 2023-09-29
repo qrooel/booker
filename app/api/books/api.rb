@@ -38,6 +38,16 @@ module Books
         present Book.find(params[:id]), with: Entities::BookFull
       end
 
+      desc 'Book cover'
+      params do
+        requires :id, type: Integer
+      end
+      get ":id/cover" do
+        book = Book.find(params[:id])
+
+        redirect book.public_cover_url(request)
+      end
+
       desc 'Create book'
       params do
         requires :title, type: String

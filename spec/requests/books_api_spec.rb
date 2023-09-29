@@ -96,6 +96,29 @@ describe Books::API, type: :request do
     end
   end
 
+  path '/api/books/{id}/cover' do
+    get "Redirects to cover image" do
+      let(:book) { create(:book_with_author) }
+
+      before do
+        book
+      end
+
+      tags 'Books'
+      produces 'application/json'
+      parameter name: :id, in: :path, type: :string
+
+      response '302', 'Redirected' do
+        let(:id) { book.id }
+
+        run_test! do |response|
+          expect(JSON.parse(response.body)).to match(book.cover_filename)
+        end
+      end
+
+    end
+  end
+
   path '/api/books' do
     post "Create book" do
       let(:author) { create(:author) }
