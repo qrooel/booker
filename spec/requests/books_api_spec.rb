@@ -103,7 +103,7 @@ describe Books::API, type: :request do
       tags 'Books'
       produces 'application/json'
       consumes 'multipart/form-data'
-      parameter name: :book, in: :formData, schema: {
+      parameter name: :'', in: :formData, schema: {
         type: :object,
         properties: {
           title: { type: :string },
@@ -117,7 +117,7 @@ describe Books::API, type: :request do
         schema type: :object,
                properties: book_properties, required: %w[id title author cover_link]
 
-        let(:book) { { title: "Problem Trzech Ciał", cover: sample_upload_file, author_id: author.id } }
+        let(:'') { { title: "Problem Trzech Ciał", cover: sample_upload_file, author_id: author.id } }
 
         run_test!
       end
@@ -129,13 +129,13 @@ describe Books::API, type: :request do
                },
                required: %w[error]
 
-        let(:book) { { title: nil, author_id: nil, cover: sample_upload_file } }
+        let(:'') { { title: nil, author_id: nil, cover: sample_upload_file } }
 
         run_test!
       end
 
       response '500', 'Params (author_id) are missing' do
-        let(:book) { { title: nil } }
+        let(:'') { { title: nil } }
 
         run_test!
       end

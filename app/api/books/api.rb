@@ -40,14 +40,12 @@ module Books
 
       desc 'Create book'
       params do
-        requires :book, type: Hash do
-          requires :title, type: String
-          requires :author_id, type: Integer
-          requires :cover, type: File
-        end
+        requires :title, type: String
+        requires :author_id, type: Integer
+        requires :cover, type: File
       end
       post do
-        book = Book.create!(declared(params)[:book])
+        book = Book.create!(declared(params))
 
         present book, with: Entities::BookFull
       end
