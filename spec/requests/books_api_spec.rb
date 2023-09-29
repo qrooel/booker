@@ -22,7 +22,7 @@ describe Books::API, type: :request do
   }
 
   path '/api/books' do
-    get "List authors" do #
+    get "List authors" do
       tags 'Books'
       produces 'application/json'
       parameter name: :page, in: :query, type: :string
